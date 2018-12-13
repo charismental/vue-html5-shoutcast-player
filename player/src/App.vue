@@ -27,15 +27,15 @@
         <div class="volume"><i class="material-icons md-36">volume_up</i></div>
       </div>
       <div class="item radios">
-        <input type="radio" id="hq" value="http://136.0.16.57:8000/.stream" v-model="currentStream">
+        <input @change="pause" type="radio" id="hq" value="http://136.0.16.57:8000/.stream" v-model="currentStream">
         <label for="hq">HQ</label>
-        <input type="radio" id="mq" value="http://136.0.16.57:8006/.stream" v-model="currentStream">
+        <input @change="pause" type="radio" id="mq" value="http://136.0.16.57:8006/.stream" v-model="currentStream">
         <label for="mq">MQ</label>
-        <input type="radio" id="lq" value="http://136.0.16.57:8004/.stream" v-model="currentStream">
+        <input @change="pause" type="radio" id="lq" value="http://136.0.16.57:8004/.stream" v-model="currentStream">
         <label for="lq">LQ</label>
       </div>
       <div class="item item-timer">
-        <div class="timer">{{ count || "00:00" }}</div>
+        <div class="timer">{{ time || "00:00" }}</div>
       </div>
     </div>
   </div>
@@ -48,8 +48,10 @@ export default {
   data() {
     return {
       count: '',
+      currentTime: 0,
       timerInterval: null,
       timerRunning: false,
+      timerPaused: false,
       currentStream: 'http://136.0.16.57:8000/.stream',
       isPlaying: false,
       songInfo: '',
@@ -70,8 +72,29 @@ export default {
     }
   },
   methods: {
-    timerCountup() {
+    timerRun() {
       this.timerRunning = true
+      this.timerInterval = setInterval(this.countupTimer, 1000)
+    },
+    timerPause() {
+      this.timerRunning = false
+      clearInterval(this.timerInterval)
+    },
+    timerReset() {
+      this.timerRunning = false
+      clearInterval(() => { this.interval })
+      this.currentTime = 0
+    },
+    countupTimer() {
+      if(this.timerRunning == true) {
+        this.currentTime++
+      }
+    },
+    pause() {
+      // eslint-disable-next-line
+      audio.pause()
+      this.isPlaying = false
+      this.timerPause()
     },
     playPause() {
       // eslint-disable-next-line
@@ -79,10 +102,9 @@ export default {
         // eslint-disable-next-line
         audio.play()
         this.isPlaying = true
+        this.timerRun()
       } else {
-        // eslint-disable-next-line
-        audio.pause()
-        this.isPlaying = false
+        this.pause()
       }
     },
     getSongInfo() {
@@ -104,6 +126,17 @@ export default {
       }else {
         return `${url}customMissing.jpg`
       }
+    },
+    time: function() {
+      return this.minutes + ":" + this.seconds
+    },
+    minutes: function() {
+      var min = Math.floor(this.currentTime / 60)
+      return min >= 10 ? min : '0' + min
+    },
+    seconds: function() {
+      var sec = this.currentTime - (this.minutes * 60)
+      return sec >= 10 ? sec : '0' + sec
     }
   },
   created() {
@@ -119,8 +152,6 @@ export default {
 </script>
 
 <style>
-#app {
-}
 #player {
   margin: auto;
   background-color: #202136;
@@ -211,6 +242,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   color: white;
+  cursor: pointer;
 }
 .item-timer {
   grid-column: span 2;
