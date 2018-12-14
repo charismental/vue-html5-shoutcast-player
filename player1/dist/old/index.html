@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue/Amplitude</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.5.1/css/foundation-float.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,400i" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/amplitudejs@3.3.1/dist/amplitude.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.5.1/js/foundation.min.js"></script>
+  <script type="text/javascript" src="./js/functions.js" defer></script>
+  <link rel="stylesheet" href="./css/app.css">
+  <script src="./node_modules/vue-truncate-filter/vue-truncate.js"></script>
+</head>
+<body>
+  <div id="app" class="grid-x grid-padding-x">
+    <div class="large-12 medium-12 small-12 cell">
+      <div id="single-song-player">
+        <img :src="picSrc" / class="album-art">
+        <div class="bottom-container">
+          <div class="control-container">
+            <!-- <div class="amplitude-play-pause" amplitude-main-play-pause="true" id="play-pause"></div> -->
+            <div id="play-pause" class="play-pause" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']"></div>
+            <div class="meta-container">
+              <span class="song-name">Title: {{ songInfo.title | truncate(30)}}</span>
+              <span class="artist">Artist: {{ songInfo.artist }}</span>
+              <span class="album">Album: {{ songInfo.album }}</span>
+              <div class="hidden-audio">
+                <audio id="audio" :src="currentStream">
+                  Your browser does not support the audio element.
+                </audio>
+                <div class="radios">
+                    <input type="radio" id="hq" value="http://136.0.16.57:8000/.stream" v-model="currentStream">
+                    <label for="hq">HQ</label>
+                    <input type="radio" id="mq" value="http://136.0.16.57:8006/.stream" v-model="currentStream">
+                    <label for="mq">MQ</label>
+                    <input type="radio" id="lq" value="http://136.0.16.57:8004/.stream" v-model="currentStream">
+                    <label for="lq">LQ</label>
+                    <input type="radio" id="frank" value="http://73.254.166.70/.stream" v-model="currentStream">
+                </div>
+                <div class="marquee">You are listening to Radio of the Master's Voice</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
