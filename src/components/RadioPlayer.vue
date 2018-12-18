@@ -1,9 +1,32 @@
 <template>
-  <div id="RadioPlayer">
-    <div id="player">
+  <div id="radio-player">
+    <div id="history" v-show="history">
+      <simplebar id="history-container" data-simplebar-auto-hide="true">
+        <div class="history-item" v-for="(song, i) in songHistory" :key="i">
+          <div class="history-album">
+            <img :src="itemImg(song)" alt="song.title" class="history-img">
+          </div>
+          <div class="history-meta">
+            <span class="song-name">{{ song.title | uppercase | truncate(22) }}</span>
+            <span class="artist">{{ song.artist }}</span>
+            <hr>
+          </div>
+        </div>
+      </simplebar>
+      <div class="item item-history" id="clear" @click="history = !history">
+        <i class="material-icons md-36" title="Click to return to Radio Player">clear</i>
+      </div>
+      <div class="item item-history paused" id="history-play" title="Play/Pause the Radio" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']">
+        <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
+      </div>
+      <div class="item item-history" id="history-volume">
+        <i class="material-icons md-36" title="Adjust volume">volume_up</i>
+      </div>
+    </div>
+    <div id="player" v-show="!history">
       <div class="item item-pic">
         <div class="album">
-            <img :src="picSrc" :alt="songInfo.title" />
+            <img :src="itemImg(songInfo)" :alt="songInfo.title" />
         </div>
       </div>
       <div class="item item-play">
@@ -19,8 +42,8 @@
           <span class="artist">{{ songInfo.artist }}</span>
           <span class="album-name">{{ songInfo.album | truncate(36) }}</span>
       </div>
-      <div class="item item-history">
-          <i class="material-icons md-36">history</i>
+      <div class="item item-history" @click="history = !history">
+          <i class="material-icons md-36" title="Click to view recent history">history</i>
       </div>
       <div class="item"></div>
       <div class="item item-volume">
@@ -42,12 +65,16 @@
 </template>
 
 <script>
+import simplebar from 'simplebar-vue'
+import 'simplebar/dist/simplebar.min.css'
 import axios from 'axios'
+
 export default {
   name: 'RadioPlayer',
   data() {
     return {
       count: '',
+      history: false,
       currentTime: 0,
       timerInterval: null,
       timerRunning: false,
@@ -55,10 +82,15 @@ export default {
       currentStream: 'http://136.0.16.57:8000/.stream',
       isPlaying: false,
       songInfo: '',
+      songHistory: '',
       refreshInterval: 10000,
       interval: '',
-      url: 'https://radiomv.org/samHTMweb/info.json',
+      url: 'https://radiomv.org/samHTMweb/info1.json',
+      historyUrl: 'https://radiomv.org/samHTMweb/',
     }
+  },
+  components: {
+    simplebar
   },
   filters: {
     uppercase: function(value) {
@@ -72,6 +104,14 @@ export default {
     }
   },
   methods: {
+    itemImg(item) {
+      const url = 'https://radiomv.org/samHTMweb/'
+      if (item.picture) {
+        return url + item.picture
+      } else {
+        return url + 'customMissing.jpg'
+      }
+    },
     timerRun() {
       this.timerRunning = true
       this.timerInterval = setInterval(this.countupTimer, 1000)
@@ -112,6 +152,7 @@ export default {
         .get(this.url)
         .then(response => {
           this.songInfo = response.data.song_info
+          this.songHistory = response.data.song_history
         })
         .catch(error => {
           window.alert(error)
@@ -119,14 +160,6 @@ export default {
     }
   },
   computed: {
-    picSrc() {
-      const url = 'https://radiomv.org/samHTMweb/'
-      if (this.songInfo.picture) {
-        return `${url}${this.songInfo.picture}`
-      }else {
-        return `${url}customMissing.jpg`
-      }
-    },
     time: function() {
       return this.minutes + ":" + this.seconds
     },
@@ -152,12 +185,89 @@ export default {
 </script>
 
 <style>
+#radio-player {
+  margin-top: 50px;
+}
+#clear {
+  grid-area: e;
+}
+#history-play {
+  grid-area: b;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  /* dont like this solution... */
+  margin-top: 5px;
+}
+#history-volume {
+  grid-area: c;
+}
+#history-play.paused {
+  background: url("../assets/play.svg");
+  background-size: cover; 
+}
+#history-play.playing {
+  background: url("../assets/pause.svg");
+  background-size: cover;
+}
+#history-container {
+  grid-area: a;
+  overflow: auto;
+  padding-left: 5px;
+  padding-top: 5px;
+  color: white;
+  display: inline-flex;
+}
+.history-item {
+  height: 50px;
+}
+.history-img {
+  max-height: 42px;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+.history-album {
+  float: left;
+  padding-right: 15px;
+  width: 50px;
+  text-align: center;
+}
+.history-meta span.song-name {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 250;
+  font-size: 16px;
+  color: #fff;
+  display: block; }
+.history-meta span.artist {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 100;
+  font-size: 12px;
+  color: #fff;
+  display: block; }
+  .history-meta hr  {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+#history {
+  margin: auto;
+  background-color: #202136;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  max-width: 540px;
+  max-height: 150px;
+  display: grid;
+  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: 50px auto 40px;
+  grid-template-areas:  "a a e"
+                        "a a b"
+                        "a a c";
+}
 #player {
   margin: auto;
   background-color: #202136;
   border-radius: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  margin-top: 50px;
   max-width: 540px;
   display: grid;
   grid-template-columns: 120px 60px auto 80px 40px;
@@ -229,6 +339,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   color: white;
+  cursor: pointer;
 }
 .material-icons.md-36 { font-size: 36px; }
 
