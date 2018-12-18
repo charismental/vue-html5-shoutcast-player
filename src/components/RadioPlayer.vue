@@ -8,7 +8,7 @@
           </div>
           <a :href="itemUrl(song)" target="_blank">
             <div class="history-meta">
-              <span class="song-name">{{ song.title | uppercase | truncate(36) }}</span>
+              <span class="song-name">{{ song.title | uppercase | truncate(24) }}</span>
               <span class="artist">{{ song.artist }}</span>
               <hr>
             </div>
@@ -257,10 +257,10 @@ a { text-decoration: none; }
   font-size: 12px;
   color: #fff;
   display: block; }
-  .history-meta hr  {
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+.history-meta hr  {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 #history {
   margin: auto;
@@ -285,6 +285,9 @@ a { text-decoration: none; }
   display: grid;
   grid-template-columns: 120px 60px auto 80px 40px;
   grid-template-rows: repeat(3, 50px);
+  grid-template-areas:"aa bb cc cc dd"
+                      "aa bb cc cc ee"
+                      "aa ff gg hh hh";
 }
 .album {
   padding: 8px;
@@ -292,7 +295,7 @@ a { text-decoration: none; }
   vertical-align: middle;
 }
 .item-pic {
-  grid-row: span 3;
+  grid-area: aa;
 }
 .album img {
   display: inline-block;
@@ -304,7 +307,7 @@ a { text-decoration: none; }
   border-radius: 15px;
 }
 .item-play {
-  grid-row: span 2;
+  grid-area: bb;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -323,8 +326,7 @@ a { text-decoration: none; }
   background: url("../assets/pause.svg");
   background-size: cover; }
 .item-meta {
-  grid-row: span 2;
-  grid-column: span 2;
+  grid-area: cc;
 }
 .item-meta span {
   padding-left: 6px;
@@ -342,12 +344,13 @@ a { text-decoration: none; }
   color: #fff;
   display: block; }
 .item-meta span.album-name {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 200;
-    font-size: 16px;
-    color: #fff;
-    display: block; }
+  font-family: "Open Sans", sans-serif;
+  font-weight: 200;
+  font-size: 16px;
+  color: #fff;
+  display: block; }
 .item-history {
+  grid-area: dd;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -357,7 +360,7 @@ a { text-decoration: none; }
 .material-icons.md-36 { font-size: 36px; }
 
 .item-volume {
-  grid-row: span 2;
+  grid-area: ff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -369,7 +372,7 @@ a { text-decoration: none; }
   cursor: pointer;
 }
 .item-timer {
-  grid-column: span 2;
+  grid-area: hh;
   font-size: 36px;
   font-family: 'Yantramanav', sans-serif;
   font-weight: 100;
@@ -382,9 +385,44 @@ a { text-decoration: none; }
   justify-content: center;
 }
 .radios {
+  grid-area: gg;
   margin-top: 10px;
 }
 .radios label {
   color: white;
+}
+
+/* mobile only */
+@media only screen and (max-width: 600px) {
+  .radios {display: none;}
+  .item-meta span.song-name {
+    font-weight: 250;
+    font-size: 16px;
+  }
+  .item-meta span.artist {
+    font-weight: 100;
+    font-size: 12px;
+  }
+  .item-meta span.album-name {
+    font-weight: 200;
+    font-size: 12px;
+  }
+  .album img {
+    max-height: 100px;
+    max-width: 76px;
+    border: 1px solid white;
+    border-radius: 10px;
+  }
+  #player {
+    grid-template-columns: 92px auto 40px;
+    grid-template-rows: repeat(3, 50px);
+    grid-template-areas: "aa cc dd"
+                         "aa cc bb"
+                         "hh gg ff";
+  }
+  .play-button {
+    width: 38px;
+    height: 38px;
+  }
 }
 </style>
