@@ -4,13 +4,15 @@
       <simplebar id="history-container" data-simplebar-auto-hide="true">
         <div class="history-item" v-for="(song, i) in songHistory" :key="i">
           <div class="history-album">
-            <img :src="itemImg(song)" alt="song.title" class="history-img">
+            <a :href="itemUrl(song)" target="_blank"><img :src="itemImg(song)" alt="song.title" class="history-img"></a>
           </div>
-          <div class="history-meta">
-            <span class="song-name">{{ song.title | uppercase | truncate(22) }}</span>
-            <span class="artist">{{ song.artist }}</span>
-            <hr>
-          </div>
+          <a :href="itemUrl(song)" target="_blank">
+            <div class="history-meta">
+              <span class="song-name">{{ song.title | uppercase | truncate(36) }}</span>
+              <span class="artist">{{ song.artist }}</span>
+              <hr>
+            </div>
+          </a>
         </div>
       </simplebar>
       <div class="item item-history" id="clear" @click="history = !history">
@@ -26,7 +28,7 @@
     <div id="player" v-show="!history">
       <div class="item item-pic">
         <div class="album">
-            <img :src="itemImg(songInfo)" :alt="songInfo.title" />
+            <a :href="itemUrl(songInfo)" target="_blank"><img :src="itemImg(songInfo)" :alt="songInfo.title" /></a>
         </div>
       </div>
       <div class="item item-play">
@@ -38,9 +40,11 @@
         </div>
       </div>
       <div class="item item-meta">
+        <a :href="itemUrl(songInfo)" target="_blank">
           <span class="song-name">{{ songInfo.title | uppercase | truncate(22) }}</span>
-          <span class="artist">{{ songInfo.artist }}</span>
-          <span class="album-name">{{ songInfo.album | truncate(36) }}</span>
+        </a>
+        <span class="artist">{{ songInfo.artist }}</span>
+        <span class="album-name">{{ songInfo.album | truncate(36) }}</span>
       </div>
       <div class="item item-history" @click="history = !history">
           <i class="material-icons md-36" title="Click to view recent history">history</i>
@@ -110,6 +114,13 @@ export default {
         return url + item.picture
       } else {
         return url + 'customMissing.jpg'
+      }
+    },
+    itemUrl(item) {
+      if (item.buycd) {
+        return item.buycd
+      } else {
+        return 'https://www.radiomv.org'
       }
     },
     timerRun() {
@@ -185,6 +196,8 @@ export default {
 </script>
 
 <style>
+a { text-decoration: none; }
+
 #radio-player {
   margin-top: 50px;
 }
