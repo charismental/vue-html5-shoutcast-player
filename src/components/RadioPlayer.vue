@@ -4,7 +4,7 @@
       <simplebar id="history-container" data-simplebar-auto-hide="true">
         <div class="history-item" v-for="(song, i) in songHistory" :key="i">
           <div class="history-album">
-            <a :href="itemUrl(song)" target="_blank"><img :src="itemImg(song)" alt="song.title" class="history-img"></a>
+            <a :href="itemUrl(song)" target="_blank"><img :src="itemImg(song)" onerror="this.src='https://radiomv.org/samHTMweb/customMissing.jpg'" alt="song.title" class="history-img"></a>
           </div>
           <a :href="itemUrl(song)" target="_blank">
             <div class="history-meta">
@@ -28,7 +28,7 @@
     <div id="player" v-show="!history">
       <div class="item item-pic">
         <div class="album">
-            <a :href="itemUrl(songInfo)" target="_blank"><img :src="itemImg(songInfo)" :alt="songInfo.title" /></a>
+            <a :href="itemUrl(songInfo)" target="_blank"><img :src="itemImg(songInfo)" onerror="this.src='https://radiomv.org/samHTMweb/customMissing.jpg'" :alt="songInfo.title" /></a>
         </div>
       </div>
       <div class="item item-play">
