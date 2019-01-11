@@ -7,8 +7,8 @@
             <a :href="itemUrl(song)" target="_blank"><img :src="itemImg(song)" onerror="this.src='https://radiomv.org/samHTMweb/customMissing.jpg'" alt="song.title" class="history-img"></a>
           </div>
           <a :href="itemUrl(song)" target="_blank">
-            <div class="history-meta">
-              <span class="song-name">{{ song.title | uppercase | truncate(24) }}</span>
+            <div class="history-meta marquee-container">
+              <span class="song-name" :class="[song.title.length >= 26 ? 'marquee' : 'normal']">{{ song.title | uppercase }}</span>
               <span class="artist">{{ song.artist }}</span>
               <hr>
             </div>
@@ -41,10 +41,10 @@
       </div>
       <div class="item item-meta">
         <a :href="itemUrl(songInfo)" target="_blank">
-          <span class="song-name">{{ songInfo.title | uppercase | truncate(22) }}</span>
+          <div class="marquee-container"><span class="song-name" :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']">{{ songInfo.title | uppercase }}</span></div>
         </a>
         <span class="artist">{{ songInfo.artist }}</span>
-        <span class="album-name">{{ songInfo.album | truncate(36) }}</span>
+        <div class="marquee-container"><span class="album-name" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
       </div>
       <div class="item item-history" @click="history = !history">
           <i class="material-icons md-36" title="Click to view recent history">history</i>
@@ -283,7 +283,7 @@ a { text-decoration: none; }
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   max-width: 540px;
   display: grid;
-  grid-template-columns: 120px 60px auto 80px 40px;
+  grid-template-columns: 120px 60px 240px 80px 40px;
   grid-template-rows: repeat(3, 50px);
   grid-template-areas:"aa bb cc cc dd"
                       "aa bb cc cc ee"
@@ -425,4 +425,28 @@ a { text-decoration: none; }
     height: 38px;
   }
 }
+
+@keyframes marquee {
+  0% { transform: translateX(100%) }
+  100% { transform: translateX(-100%) }
+}
+
+@-webkit-keyframes marquee {
+  0% { transform: translateX(100%) }
+  100% { transform: translateX(-100%) }
+}
+
+.marquee-container {
+  overflow: hidden;
+}
+.marquee {
+  white-space: nowrap;
+  animation: marquee 8s linear infinite;
+  -webkit-animation: marquee 8s linear infinite;
+}
+.marquee:hover {
+  -webkit-animation-play-state: paused;
+  animation-play-state: paused;
+}
+
 </style>
