@@ -21,8 +21,9 @@
       <div class="item item-history paused" id="history-play" title="Play/Pause the Radio" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']">
         <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
       </div>
-      <div class="item item-history" id="history-volume">
-        <i class="material-icons md-36" title="Adjust volume">volume_up</i>
+      <div class="item item-history" id="history-volume" @click="muteToggle">
+        <i class="material-icons md-36" v-if="!muted" title="Adjust volume">volume_up</i>
+        <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
       </div>
     </div>
     <div id="player" v-show="!history">
@@ -51,7 +52,10 @@
       </div>
       <div class="item"></div>
       <div class="item item-volume">
-        <div class="volume"><i class="material-icons md-36">volume_up</i></div>
+        <div class="volume" @click="muteToggle">
+          <i class="material-icons md-36" v-if="!muted" title="Adjust volume">volume_up</i>
+          <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
+        </div>
       </div>
       <div class="item radios">
         <input @change="pause" type="radio" id="hq" value="http://136.0.16.57:8000/.stream" v-model="currentStream">
@@ -85,6 +89,7 @@ export default {
       timerPaused: false,
       currentStream: 'http://136.0.16.57:8000/.stream',
       isPlaying: false,
+      muted: false,
       songInfo: '',
       songHistory: '',
       refreshInterval: 10000,
@@ -160,6 +165,11 @@ export default {
       } else {
         this.pause()
       }
+    },
+    muteToggle(){
+      // eslint-disable-next-line
+      audio.muted = !audio.muted
+      this.muted = !this.muted
     },
     getSongInfo() {
       axios
