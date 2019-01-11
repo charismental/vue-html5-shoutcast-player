@@ -108,6 +108,9 @@ export default {
     }
   },
   methods: {
+    scrollToTop() {
+      window.scrollTo(0,0)
+    },
     itemImg(item) {
       const url = 'https://radiomv.org/samHTMweb/'
       if (item.picture) {
@@ -428,12 +431,12 @@ a { text-decoration: none; }
 
 @keyframes marquee {
   0% { transform: translateX(100%) }
-  100% { transform: translateX(-100%) }
+  100% { transform: translateX(-115%) }
 }
 
 @-webkit-keyframes marquee {
   0% { transform: translateX(100%) }
-  100% { transform: translateX(-100%) }
+  100% { transform: translateX(-115%) }
 }
 
 .marquee-container {
