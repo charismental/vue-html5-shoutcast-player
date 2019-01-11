@@ -417,7 +417,7 @@ a { text-decoration: none; }
     border-radius: 10px;
   }
   #player {
-    grid-template-columns: 92px auto 40px;
+    grid-template-columns: 92px 252px 40px;
     grid-template-rows: repeat(3, 50px);
     grid-template-areas: "aa cc dd"
                          "aa cc bb"
