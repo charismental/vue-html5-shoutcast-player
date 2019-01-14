@@ -211,9 +211,6 @@ export default {
 <style>
 a { text-decoration: none; }
 
-#radio-player {
-  margin-top: 50px;
-}
 #clear {
   grid-area: e;
 }
@@ -276,7 +273,7 @@ a { text-decoration: none; }
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 #history {
-  margin: auto;
+  margin: inherit;
   background-color: #202136;
   border-radius: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -289,8 +286,11 @@ a { text-decoration: none; }
                         "a a b"
                         "a a c";
 }
+#radio-player {
+    margin: 50px auto;
+}
 #player {
-  margin: auto;
+  margin: inherit;
   background-color: #202136;
   border-radius: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -407,7 +407,7 @@ a { text-decoration: none; }
 
 /* mobile only */
 @media only screen and (max-width: 600px) {
-  .radios {display: none;}
+  /* .radios {display: none;} */
   .item-meta span.song-name {
     font-weight: 250;
     font-size: 16px;
@@ -420,14 +420,69 @@ a { text-decoration: none; }
     font-weight: 200;
     font-size: 12px;
   }
+  .history-meta span.song-name {
+    font-weight: 200;
+    font-size: 14px;
+  }
   .album img {
-    max-height: 100px;
+    max-height: 90px;
     max-width: 76px;
     border: 1px solid white;
     border-radius: 10px;
   }
+  #radio-player {
+    width: 80vw;
+  }
   #player {
-    grid-template-columns: 92px 252px 40px;
+    grid-template-columns: 92px auto 40px;
+    grid-template-rows: repeat(3, 50px);
+    grid-template-areas: "aa cc dd"
+                         "aa cc bb"
+                         "hh gg ff";
+  }
+  .play-button {
+    width: 38px;
+    height: 38px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .radios {
+    display: none;
+  }
+}
+@media only screen and (max-width: 480px) {
+  /* .radios {display: none;} */
+  .item-meta span.song-name {
+    font-weight: 250;
+    font-size: 16px;
+  }
+  .item-meta span.artist {
+    font-weight: 100;
+    font-size: 12px;
+  }
+  .item-meta span.album-name {
+    font-weight: 200;
+    font-size: 12px;
+  }
+  .history-meta span.song-name {
+    font-weight: 150;
+    font-size: 12px;
+  }
+  .album img {
+    max-height: 90px;
+    max-width: 76px;
+    border: 1px solid white;
+    border-radius: 10px;
+  }
+  #radio-player {
+    width: 70vw;
+  }
+  #history {
+    max-width: 440px;
+  }
+  #player {
+    max-width: 440px;
+    grid-template-columns: 92px auto 40px;
     grid-template-rows: repeat(3, 50px);
     grid-template-areas: "aa cc dd"
                          "aa cc bb"
