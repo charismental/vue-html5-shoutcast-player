@@ -407,7 +407,6 @@ a { text-decoration: none; }
 
 /* mobile only */
 @media only screen and (max-width: 600px) {
-  /* .radios {display: none;} */
   .item-meta span.song-name {
     font-weight: 250;
     font-size: 16px;
@@ -430,9 +429,6 @@ a { text-decoration: none; }
     border: 1px solid white;
     border-radius: 10px;
   }
-  #radio-player {
-    width: 80vw;
-  }
   #player {
     grid-template-columns: 92px auto 40px;
     grid-template-rows: repeat(3, 50px);
@@ -445,13 +441,8 @@ a { text-decoration: none; }
     height: 38px;
   }
 }
-@media only screen and (max-width: 400px) {
-  .radios {
-    display: none;
-  }
-}
+
 @media only screen and (max-width: 480px) {
-  /* .radios {display: none;} */
   .item-meta span.song-name {
     font-weight: 250;
     font-size: 16px;
@@ -473,9 +464,6 @@ a { text-decoration: none; }
     max-width: 76px;
     border: 1px solid white;
     border-radius: 10px;
-  }
-  #radio-player {
-    width: 70vw;
   }
   #history {
     max-width: 440px;
