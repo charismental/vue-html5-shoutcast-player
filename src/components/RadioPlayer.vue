@@ -46,6 +46,8 @@
         </a>
         <span class="artist">{{ songInfo.artist }}</span>
         <div class="marquee-container"><span class="album-name" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
+        <br>
+        <hr>
       </div>
       <div class="item item-history" @click="history = !history">
           <i class="material-icons md-36" title="Click to view recent history">history</i>
@@ -58,6 +60,8 @@
         </div>
       </div>
       <div class="item radios">
+        <span>Stream Quality:</span>
+        <br>
         <input @change="pause" type="radio" id="hq" value="http://136.0.16.57:8000/.stream" v-model="currentStream">
         <label for="hq">HQ</label>
         <input @change="pause" type="radio" id="mq" value="http://136.0.16.57:8006/.stream" v-model="currentStream">
@@ -340,6 +344,7 @@ a { text-decoration: none; }
   background-size: cover; }
 .item-meta {
   grid-area: cc;
+  margin-top: 5px;
 }
 .item-meta span {
   padding-left: 6px;
@@ -356,6 +361,11 @@ a { text-decoration: none; }
   font-size: 14px;
   color: #fff;
   display: block; }
+.item-meta hr  {
+  border: 0;
+  height: 1px;
+  margin: 0;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0)); }
 .item-meta span.album-name {
   font-family: "Open Sans", sans-serif;
   font-weight: 200;
@@ -399,11 +409,17 @@ a { text-decoration: none; }
 }
 .radios {
   grid-area: gg;
-  margin-top: 10px;
+  margin-left: 8px;
 }
 .radios label {
   color: white;
 }
+.radios span {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 100;
+  font-size: 14px;
+  color: #fff; 
+  }
 
 /* mobile only */
 @media only screen and (max-width: 600px) {
