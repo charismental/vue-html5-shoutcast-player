@@ -132,9 +132,6 @@ export default {
     }
   },
   methods: {
-    scrollToTop() {
-      window.scrollTo(0,0)
-    },
     itemImg(item) {
       const url = 'https://radiomv.org/samHTMweb/'
       if (item.picture) {
