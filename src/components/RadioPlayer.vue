@@ -23,8 +23,8 @@
       </div>
       <div class="item item-history" id="history-volume" @click="muteToggle">
         
-        <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
-        <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
+        <i class="material-icons md-36" v-if="volume > 0" title="Mute audio">volume_up</i>
+        <i class="material-icons md-36" v-else title="Unmute audio">volume_off</i>
 
         <!-- <div class="volume" v-if="!volumeAdjust" @mouseenter="volumeAdjust = !volumeAdjust">
           <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
@@ -97,6 +97,7 @@ export default {
   name: 'RadioPlayer',
   data() {
     return {
+      previousVolume: 75,
       volume: 75,
       volumeAdjust: false,
       count: '',
@@ -188,7 +189,12 @@ export default {
       // eslint-disable-next-line
       // audio.muted = !audio.muted
       // this.muted = !this.muted
-      return this.volume = 0
+      if (this.volume == 0) {
+        this.volume = this.previousVolume
+      } else {
+        this.previousVolume = this.volume
+        return this.volume = 0
+      }
     },
     getSongInfo() {
       axios
