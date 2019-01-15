@@ -67,7 +67,7 @@
           <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
           <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
         </div>
-        <div class="volume" v-else @mouseleave="volumeAdjust = !volumeAdjust">
+        <div class="volume" v-else @touchend="volumeAdjust = !volumeAdjust" @mouseleave="volumeAdjust = !volumeAdjust">
           <input type="range" id="volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
         </div>
       </div>
