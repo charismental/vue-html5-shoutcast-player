@@ -22,8 +22,17 @@
         <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
       </div>
       <div class="item item-history" id="history-volume" @click="muteToggle">
+        
         <i class="material-icons md-36" v-if="!muted" title="Adjust volume">volume_up</i>
         <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
+
+        <!-- <div class="volume" v-if="!volumeAdjust" @mouseenter="volumeAdjust = !volumeAdjust">
+          <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
+          <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
+        </div>
+        <div class="volume volume-slider" v-else @mouseleave="volumeAdjust = !volumeAdjust">
+          <input type="range" id="volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
+        </div> -->
       </div>
     </div>
     <div id="player" v-show="!history">
@@ -54,9 +63,12 @@
       </div>
       <div class="item"></div>
       <div class="item item-volume">
-        <div class="volume" @click="muteToggle">
-          <i class="material-icons md-36" v-if="!muted" title="Adjust volume">volume_up</i>
+        <div class="volume" @click="muteToggle" v-if="!volumeAdjust" @mouseenter="volumeAdjust = !volumeAdjust">
+          <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
           <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
+        </div>
+        <div class="volume" v-else @mouseleave="volumeAdjust = !volumeAdjust">
+          <input type="range" id="volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
         </div>
       </div>
       <div class="item radios">
@@ -85,6 +97,8 @@ export default {
   name: 'RadioPlayer',
   data() {
     return {
+      volume: 75,
+      volumeAdjust: false,
       count: '',
       history: false,
       currentTime: 0,
@@ -187,6 +201,12 @@ export default {
         })
     }
   },
+  watch: {
+    volume() {
+      // eslint-disable-next-line
+      audio.volume = this.volume / 100
+    }
+  },
   computed: {
     time: function() {
       return this.minutes + ":" + this.seconds
@@ -215,6 +235,12 @@ export default {
 <style>
 a { text-decoration: none; }
 
+#volume-slider {
+  -webkit-appearance: slider-vertical;
+    height: 60px;
+    margin-top: -15px;
+    width: 60px;
+}
 #clear {
   grid-area: e;
 }
