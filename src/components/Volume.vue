@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="volume-icon"  v-if="!volumeAdjust" @mouseenter="volumeAdjustToggle">    
+        <div class="volume-icon"  v-if="!volumeAdjust" @touchstart="volumeAdjustToggle" @mouseenter="volumeAdjustToggle">    
             <i class="material-icons md-36" v-if="volume > 0" title="Adjust audio">volume_up</i>
             <i class="material-icons md-36" v-else title="Adjust audio">volume_off</i>
         </div>
