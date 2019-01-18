@@ -6,24 +6,37 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import History from './History.vue'
 import Player from './Player.vue'
 // import axios from 'axios'
 
 export default {
   name: 'RadioPlayer',
-  data() {
-    return {
-      // history: false,
-    }
-  },
   components: {
     History,
     Player
   },
+  methods: {
+    ...mapActions([
+      'getSongInfo'
+    ]),
+    ...mapMutations([
+      'newInterval'
+    ])
+  },
+  created() {
+    this.getSongInfo()
+    this.newInterval(setInterval(this.getSongInfo, this.refreshInterval))
+  },
   computed: {
+    ...mapState([
+      'refreshInterval'
+    ]),
     history: function() {
-      return this.$store.getters.history
+      return this.$store.state.history
     }
   }
 }

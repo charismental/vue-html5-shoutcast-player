@@ -5,22 +5,22 @@
           <div class="history-album">
             <a :href="itemUrl(song)" target="_blank"><img :src="itemImg(song)" onerror="this.src='https://radiomv.org/samHTMweb/customMissing.jpg'" alt="song.title" class="history-img"></a>
           </div>
-          <a :href="itemUrl(song)" target="_blank">
-            <div class="history-meta marquee-container">
+          <div class="history-meta marquee-container">
+            <a :href="itemUrl(song)" target="_blank">
               <span class="song-name" :class="[song.title.length >= 26 ? 'marquee' : 'normal']">{{ song.title | uppercase }}</span>
-              <span class="artist">{{ song.artist }}</span>
-              <hr>
-            </div>
-          </a>
+            </a>
+            <span class="artist">{{ song.artist }}</span>
+            <hr>
+          </div>
         </div>
       </simplebar>
-      <div class="item item-history" id="clear" @click="historyToggle">
+      <div class="item-history" id="clear" @click="historyToggle">
         <i class="material-icons md-36" title="Click to return to Radio Player">clear</i>
       </div>
-      <div class="item item-history paused" id="history-play" title="Play/Pause the Radio" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']">
+      <div class="item-history paused" id="history-play" title="Play/Pause the Radio" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']">
         <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
       </div>
-      <div class="item item-history" id="history-volume" @click="muteToggle">    
+      <div class="item-history" id="history-volume" @click="muteToggle">    
         <i class="material-icons md-36" v-if="volume > 0" title="Mute audio">volume_up</i>
         <i class="material-icons md-36" v-else title="Unmute audio">volume_off</i>
       </div>
@@ -35,92 +35,69 @@ import { mapState } from 'vuex'
 import 'simplebar/dist/simplebar.min.css'
 
 export default {
-    name: 'History',
-    components: {
-        simplebar
-    },
-    data() {
-        return {
-            previousVolume: 75,
-            volume: 75,
-        }
-    },
-    computed: {
-        ...mapState([
-            'songHistory',
-            'isPlaying',
-
-        ])
-    },
-    methods: {
-        ...mapMutations([
-            'historyToggle'
-        ]),
-        ...mapActions([
-            'getSongInfo',
-            'setIsPlaying'
-        ]),
-        itemImg(item) {
-            const url = 'https://radiomv.org/samHTMweb/'
-            if (item.picture) {
-                return url + item.picture
-            } else {
-                return url + 'customMissing.jpg'
-            }
-        },
-        itemUrl(item) {
-            if (item.buycd) {
-                return item.buycd
-            } else {
-                return 'https://www.radiomv.org'
-            }
-        },    
-        playPause() {
-            // eslint-disable-next-line
-            if (audio.paused) {
-                // eslint-disable-next-line
-                audio.play()
-                this.setIsPlaying(true)
-                this.timerRun()
-            } else {
-                this.pause()
-            }
-        },
-        pause() {
-            // eslint-disable-next-line
-            audio.pause()
-            this.setIsPlaying(false)
-            this.timerPause()
-        },
-        muteToggle(){
-            if (this.volume == 0) {
-                this.volume = this.previousVolume
-            } else {
-                this.previousVolume = this.volume
-                return this.volume = 0
-            }
-        },
-    },
-    watch: {
-        volume() {
-        // eslint-disable-next-line
-        audio.volume = this.volume / 100
-        }
-    },
-    created() {
-        this.getSongInfo()
-        window.addEventListener('keydown', (e) => {
-            if (e.key == ' ') {
-                this.playPause()
-            }
-        })
+  name: 'History',
+  components: {
+      simplebar
+  },
+  computed: {
+    ...mapState([
+      'songHistory',
+      'isPlaying'
+    ]),
+    volume: {
+      get () {
+        return this.$store.state.volume
+      },
+      set (val) {
+        this.$store.commit('updateVolume', val)
+      }
     }
+  },
+  methods: {
+    ...mapMutations([
+      'historyToggle'
+    ]),
+    ...mapActions([
+      'getSongInfo',
+      'playPause',
+      'pause',
+      'muteToggle',
+      'itemImg'
+    ]),
+    itemImg(item) {
+      const url = 'https://radiomv.org/samHTMweb/'
+      if (item.picture) {
+        return url + item.picture
+      } else {
+        return url + 'customMissing.jpg'
+      }
+    },
+    itemUrl(item) {
+      if (item.buycd) {
+        return item.buycd
+      } else {
+        return 'https://www.radiomv.org'
+      }
+    }
+  },
+  watch: {
+    volume() {
+      // eslint-disable-next-line
+      audio.volume = this.volume / 100
+    }
+  },
+  created() {
+    window.addEventListener('keydown', (e) => {
+      if (e.key == ' ') {
+        this.playPause()
+      }
+    })
+  }
 }
 </script>
 
 <style scoped>
 .item-history {
-  grid-area: dd;
   display: flex;
   flex-direction: column;
   justify-content: center;

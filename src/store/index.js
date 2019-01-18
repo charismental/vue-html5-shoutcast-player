@@ -6,41 +6,57 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        // volume etc
+        // volume
         previousVolume: '',
         volume: 75,
         volumeAdjust: false,
-        muted: false,
-        // timer
+        // fetch intervals
         refreshInterval: 10000,
         interval: '',
-        count: '',
+        // timer
         currentTime: 0,
         timerInterval: null,
         timerRunning: false,
-        timerPaused: false,
-        // refactor to single object with current and history
+        // meta objects
         songInfo: '',
         songHistory: '',
         // toggles
         history: false,
-        isPlaying: false,
-        // refactor streams 8006 8004
-        streamIp: 'http://136.0.16.57:',
-        streamPort: 8000,
-        streamSuffix: '/.stream',
-        historyUrl: 'https://radiomv.org/samHTMweb/',
+        isPlaying: false
     },
     mutations: {
-        historyToggle(state) {
-            state.history = !state.history
+        volumeAdjustToggle(state) {
+            state.volumeAdjust = !state.volumeAdjust
+        },
+        updateVolume(state, payload) {
+            state.volume = payload
+        },
+        setPreviousVolume(state, payload) {
+            state.previousVolume = payload
+        },
+        countupTimer(state) {
+            if(state.timerRunning) {
+                state.currentTime++
+            }
+        },
+        setTimerRunning(state, payload) {
+            state.timerRunning = payload
+        },
+        setTimerInterval(state, payload) {
+            state.timerInterval = payload
         },
         setSongInfo(state, payload) {
             state.songInfo = payload.song_info
             state.songHistory = payload.song_history
         },
-        isPlaying(state, value) {
-            state.isPlaying = value
+        historyToggle(state) {
+            state.history = !state.history
+        },
+        isPlaying(state, payload) {
+            state.isPlaying = payload
+        },
+        newInterval(state, payload) {
+            state.interval = payload
         }
     },
     actions: {
@@ -54,14 +70,42 @@ export const store = new Vuex.Store({
               .catch(err => {
                 window.alert(err)
               })
-          },
-        setIsPlaying({ commit }, payload) {
-            commit('isPlaying', payload)
-        }
-    },
-    getters: {
-        history(state) {
-            return state.history
+        },
+        playPause({ commit, dispatch }) {
+            // eslint-disable-next-line
+            if (audio.paused) {
+                // eslint-disable-next-line
+                audio.play()
+                commit('isPlaying', true)
+                dispatch('timerRun')
+            } else {
+                dispatch('pause')
+            }
+        },
+        pause({ commit, dispatch }) {
+            // eslint-disable-next-line
+            audio.pause()
+            commit('isPlaying', false)
+            dispatch('timerPause')
+        },
+        timerRun({ state, commit }) {
+            commit('setTimerRunning', true)
+            commit('setTimerInterval', setInterval(function(){
+                if(state.timerRunning) {
+                    state.currentTime++
+                }}, 1000))
+        },
+        timerPause({ state, commit }) {
+            commit('setTimerRunning', false)
+            clearInterval(state.timerInterval)
+        },
+        muteToggle({ state, commit }){
+            if (state.volume == 0) {
+                commit('updateVolume', state.previousVolume)
+            } else {
+                commit('setPreviousVolume', state.volume)
+                commit('updateVolume', 0)
+            }
         }
     }
   })
