@@ -20,18 +20,20 @@
       <div class="item-history paused" id="history-play" title="Play/Pause the Radio" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']">
         <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
       </div>
-      <div class="item-history" id="history-volume" v-if="!volumeAdjust" @mouseenter="volumeAdjustToggle" @click="muteToggle">    
+      <volume />
+      <!-- <div class="item-history" id="history-volume" v-if="!volumeAdjust" @mouseenter="volumeAdjustToggle" @click="muteToggle">    
         <i class="material-icons md-36" v-if="volume > 0" title="Mute audio">volume_up</i>
         <i class="material-icons md-36" v-else title="Unmute audio">volume_off</i>
       </div>
       <div class="volume" v-else @touchend="volumeAdjustToggle" @mouseleave="volumeAdjustToggle">
-        <input type="range" id="history-volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
-      </div>
+        <input type="range" id="history-volume-slider" name="volume-slider" orient="vertical" min="0" max="100" step="1" v-model="volume">
+      </div> -->
     </div>
 </template>
 
 <script>
 import simplebar from 'simplebar-vue'
+import Volume from './Volume.vue'
 import { mapMutations } from 'vuex'
 import { mapActions } from 'vuex'
 import { mapState } from 'vuex'
@@ -40,34 +42,23 @@ import 'simplebar/dist/simplebar.min.css'
 export default {
   name: 'History',
   components: {
-      simplebar
+      simplebar,
+      Volume
   },
   computed: {
     ...mapState([
       'songHistory',
-      'isPlaying',
-      'volumeAdjust'
-    ]),
-    volume: {
-      get () {
-        return this.$store.state.volume
-      },
-      set (val) {
-        this.$store.commit('updateVolume', val)
-      }
-    }
+      'isPlaying'
+    ])
   },
   methods: {
     ...mapMutations([
-      'historyToggle',
-      'volumeAdjustToggle'
+      'historyToggle'
     ]),
     ...mapActions([
       'getSongInfo',
       'playPause',
-      'pause',
-      'muteToggle',
-      'itemImg'
+      'pause'
     ]),
     itemImg(item) {
       const url = 'https://radiomv.org/samHTMweb/'
@@ -85,12 +76,6 @@ export default {
       }
     }
   },
-  watch: {
-    volume() {
-      // eslint-disable-next-line
-      audio.volume = this.volume / 100
-    }
-  },
   created() {
     window.addEventListener('keydown', (e) => {
       if (e.key == ' ') {
@@ -102,12 +87,13 @@ export default {
 </script>
 
 <style scoped>
-#history-volume-slider {
+/* #history-volume-slider {
   -webkit-appearance: slider-vertical;
+  writing-mode: bt-lr;
   height: 40px;
   margin-top: 1px;
   width: 10px;
-}
+} */
 .item-history {
   display: flex;
   flex-direction: column;

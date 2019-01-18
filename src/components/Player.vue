@@ -15,27 +15,17 @@
       </div>
       <div class="item-meta">
         <a :href="itemUrl(songInfo)" target="_blank">
-          <!-- :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']" -->
-          <div class="marquee-container"><span class="song-name">{{ songInfo.title | uppercase }}</span></div>
+          <div class="marquee-container" :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']"><span class="song-name">{{ songInfo.title | uppercase }}</span></div>
         </a>
         <span class="artist">{{ songInfo.artist }}</span>
-        <!-- :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']" -->
-        <div class="marquee-container"><span class="album-name">{{ songInfo.album }}</span></div>
+        <div class="marquee-container" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']"><span class="album-name">{{ songInfo.album }}</span></div>
         <br>
         <hr>
       </div>
       <div class="item-history" @click="historyToggle">
           <i class="material-icons md-36" title="Click to view recent history">history</i>
       </div>
-      <div class="item-volume">
-        <div class="volume" @click="muteToggle" v-if="!volumeAdjust" @mouseenter="volumeAdjustToggle">
-          <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
-          <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
-        </div>
-        <div class="volume" v-else @touchend="volumeAdjustToggle" @mouseleave="volumeAdjustToggle">
-          <input type="range" id="volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
-        </div>
-      </div>
+      <volume class="item-volume" />
       <div class="radios">
         <span>Stream Quality:</span>
         <br>
@@ -55,11 +45,13 @@ import { mapMutations } from 'vuex'
 import { mapActions } from 'vuex'
 import { mapState } from 'vuex'
 import Timer from './Timer.vue'
+import Volume from './Volume.vue'
 
 export default {
   name: 'Player',
   components: {
-    Timer
+    Timer,
+    Volume
   },
   data() {
     return {
@@ -215,19 +207,18 @@ export default {
   grid-area: ff;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin: 0 auto;
+}
+.item-volume #volume-slider-input {
+  height: 60px;
+  margin-top: -15px;
+  width: 60px;
 }
 .volume {
   margin-left: auto;
   margin-right: auto;
   color: white;
   cursor: pointer;
-}
-#volume-slider {
-  -webkit-appearance: slider-vertical;
-  height: 60px;
-  margin-top: -15px;
-  width: 60px;
 }
 .radios {
   grid-area: gg;
@@ -244,11 +235,11 @@ export default {
 }
 
 @media only screen and (max-width: 600px) {
-  #volume-slider {
-    height: 40px;
-    margin-top: -5px;
-    width: 10px;
-  }
+  .item-volume #volume-slider-input {
+  height: 40px;
+  margin-top: -20px;
+  width: 10px;
+}
   .item-meta span.song-name {
     font-weight: 250;
     font-size: 16px;
@@ -278,6 +269,9 @@ export default {
     margin: 0;
     width: 36px;
     height: 36px;
+  }
+  .item-volume {
+    margin: unset;
   }
 }
   @media only screen and (max-width: 480px) {
