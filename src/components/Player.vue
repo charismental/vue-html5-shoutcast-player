@@ -15,10 +15,12 @@
       </div>
       <div class="item-meta">
         <a :href="itemUrl(songInfo)" target="_blank">
-          <div class="marquee-container"><span class="song-name" :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']">{{ songInfo.title | uppercase }}</span></div>
+          <!-- :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']" -->
+          <div class="marquee-container"><span class="song-name">{{ songInfo.title | uppercase }}</span></div>
         </a>
         <span class="artist">{{ songInfo.artist }}</span>
-        <div class="marquee-container"><span class="album-name" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
+        <!-- :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']" -->
+        <div class="marquee-container"><span class="album-name">{{ songInfo.album }}</span></div>
         <br>
         <hr>
       </div>
@@ -30,7 +32,7 @@
           <i class="material-icons md-36" v-if="volume > 0" title="Adjust volume">volume_up</i>
           <i class="material-icons md-36" v-else title="Adjust volume">volume_off</i>
         </div>
-        <div class="volume" v-else @touchend="volumeAdjust = !volumeAdjust" @mouseleave="volumeAdjustToggle">
+        <div class="volume" v-else @touchend="volumeAdjustToggle" @mouseleave="volumeAdjustToggle">
           <input type="range" id="volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
         </div>
       </div>
@@ -61,19 +63,15 @@ export default {
   },
   data() {
     return {
-      previousVolume: 75,
-      // volume: 75,
       currentStream: 'http://136.0.16.57:8000/.stream'
     }
   },
   methods: {
     ...mapMutations([
         'historyToggle',
-        'newInterval',
         'volumeAdjustToggle'
     ]),
     ...mapActions([
-        'getSongInfo',
         'playPause',
         'pause',
         'muteToggle'
@@ -246,6 +244,11 @@ export default {
 }
 
 @media only screen and (max-width: 600px) {
+  #volume-slider {
+    height: 40px;
+    margin-top: -5px;
+    width: 10px;
+  }
   .item-meta span.song-name {
     font-weight: 250;
     font-size: 16px;
@@ -272,43 +275,17 @@ export default {
                          "hh gg ff";
   }
   .play-button {
-    width: 38px;
-    height: 38px;
+    margin: 0;
+    width: 36px;
+    height: 36px;
   }
 }
   @media only screen and (max-width: 480px) {
   .item-meta {
     max-width: 210px;
   }
-  .item-meta span.song-name {
-    font-weight: 250;
-    font-size: 16px;
-  }
-  .item-meta span.artist {
-    font-weight: 100;
-    font-size: 12px;
-  }
-  .item-meta span.album-name {
-    font-weight: 200;
-    font-size: 12px;
-  }
-  .album img {
-    max-height: 90px;
-    max-width: 76px;
-    border: 1px solid white;
-    border-radius: 10px;
-  }
   #player {
     max-width: 440px;
-    grid-template-columns: 92px auto 40px;
-    grid-template-rows: repeat(3, 50px);
-    grid-template-areas: "aa cc dd"
-                         "aa cc bb"
-                         "hh gg ff";
-  }
-  .play-button {
-    width: 38px;
-    height: 38px;
   }
 }
 @media only screen and (max-width: 360px) {

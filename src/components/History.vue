@@ -20,9 +20,12 @@
       <div class="item-history paused" id="history-play" title="Play/Pause the Radio" @click="playPause" @keyup.space="playPause" :class="[isPlaying ? 'playing' : 'paused']">
         <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
       </div>
-      <div class="item-history" id="history-volume" @click="muteToggle">    
+      <div class="item-history" id="history-volume" v-if="!volumeAdjust" @mouseenter="volumeAdjustToggle" @click="muteToggle">    
         <i class="material-icons md-36" v-if="volume > 0" title="Mute audio">volume_up</i>
         <i class="material-icons md-36" v-else title="Unmute audio">volume_off</i>
+      </div>
+      <div class="volume" v-else @touchend="volumeAdjustToggle" @mouseleave="volumeAdjustToggle">
+        <input type="range" id="history-volume-slider" name="volume-slider" min="0" max="100" step="1" v-model="volume">
       </div>
     </div>
 </template>
@@ -42,7 +45,8 @@ export default {
   computed: {
     ...mapState([
       'songHistory',
-      'isPlaying'
+      'isPlaying',
+      'volumeAdjust'
     ]),
     volume: {
       get () {
@@ -55,7 +59,8 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'historyToggle'
+      'historyToggle',
+      'volumeAdjustToggle'
     ]),
     ...mapActions([
       'getSongInfo',
@@ -97,6 +102,12 @@ export default {
 </script>
 
 <style scoped>
+#history-volume-slider {
+  -webkit-appearance: slider-vertical;
+  height: 40px;
+  margin-top: 1px;
+  width: 10px;
+}
 .item-history {
   display: flex;
   flex-direction: column;
@@ -109,14 +120,16 @@ export default {
 }
 #history-play {
   grid-area: b;
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
   /* dont like this solution... */
-  margin-top: 5px;
+  margin-top: 7px;
 }
 #history-volume {
   grid-area: c;
+  margin-top: -5px;
+  margin-left: 2px;
 }
 #history-play.paused {
   background: url("../assets/play.svg");
