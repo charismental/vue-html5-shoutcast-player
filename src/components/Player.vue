@@ -236,9 +236,9 @@ export default {
 
 @media only screen and (max-width: 600px) {
   .item-volume #volume-slider-input {
-  height: 40px;
-  margin-top: -20px;
-  width: 10px;
+    height: 40px;
+    margin-top: 1px;
+    width: 33px
 }
   .item-meta span.song-name {
     font-weight: 250;
