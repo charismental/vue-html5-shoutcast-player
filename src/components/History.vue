@@ -21,13 +21,6 @@
         <!-- <i class="material-icons md-36" title="Play/Pause the Radio">play_circle_outline</i> -->
       </div>
       <volume />
-      <!-- <div class="item-history" id="history-volume" v-if="!volumeAdjust" @mouseenter="volumeAdjustToggle" @click="muteToggle">    
-        <i class="material-icons md-36" v-if="volume > 0" title="Mute audio">volume_up</i>
-        <i class="material-icons md-36" v-else title="Unmute audio">volume_off</i>
-      </div>
-      <div class="volume" v-else @touchend="volumeAdjustToggle" @mouseleave="volumeAdjustToggle">
-        <input type="range" id="history-volume-slider" name="volume-slider" orient="vertical" min="0" max="100" step="1" v-model="volume">
-      </div> -->
     </div>
 </template>
 

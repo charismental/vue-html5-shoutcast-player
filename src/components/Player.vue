@@ -15,10 +15,10 @@
       </div>
       <div class="item-meta">
         <a :href="itemUrl(songInfo)" target="_blank">
-          <div class="marquee-container" :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']"><span class="song-name">{{ songInfo.title | uppercase }}</span></div>
+          <div class="marquee-container"><span class="song-name" :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']">{{ songInfo.title | uppercase }}</span></div>
         </a>
         <span class="artist">{{ songInfo.artist }}</span>
-        <div class="marquee-container" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']"><span class="album-name">{{ songInfo.album }}</span></div>
+        <div class="marquee-container"><span class="album-name" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
         <br>
         <hr>
       </div>
