@@ -62,7 +62,7 @@ export const store = new Vuex.Store({
     actions: {
         getSongInfo({ commit }) {
             axios
-              .get('https://radiomv.org/samHTMweb/info1.json')
+              .get('https://radiomv.org/samHTMweb/info.json')
               .then(res => res.data)
               .then(payload => {
                   commit('setSongInfo', payload)

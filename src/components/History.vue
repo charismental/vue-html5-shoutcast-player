@@ -1,7 +1,7 @@
 <template>
     <div id="history">
       <simplebar id="history-container" data-simplebar-auto-hide="true">
-        <div class="history-item" v-for="(song, i) in songHistory" :key="i">
+        <div class="history-item" v-for="(song, i) in songHistory.slice(0,29)" :key="i">
           <div class="history-album">
             <a :href="itemUrl(song)" target="_blank"><img :src="itemImg(song)" onerror="this.src='https://radiomv.org/samHTMweb/customMissing.jpg'" alt="song.title" class="history-img"></a>
           </div>
