@@ -67,9 +67,6 @@ export const store = new Vuex.Store({
               .then(payload => {
                   commit('setSongInfo', payload)
               })
-              .catch(err => {
-                window.alert(err)
-              })
         },
         playPause({ commit, dispatch }) {
             // eslint-disable-next-line

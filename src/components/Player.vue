@@ -15,10 +15,11 @@
       </div>
       <div class="item-meta">
         <a :href="itemUrl(songInfo)" target="_blank">
-          <div class="marquee-container"><span class="song-name" :class="[songInfo.title.length >= 22 ? 'marquee' : 'normal']">{{ songInfo.title | uppercase }}</span></div>
+          <div class="marquee-container"><span class="song-name" :class="[marqueeCheck(songInfo.title, 20) ? 'marquee' : 'normal']">{{ songInfo.title | capitalize }}</span></div>
         </a>
         <span class="artist">{{ songInfo.artist }}</span>
-        <div class="marquee-container"><span class="album-name" :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
+        <!-- :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']" -->
+        <div class="marquee-container"><span class="album-name" :class="[marqueeCheck(songInfo.album, 36) ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
         <br>
         <hr>
       </div>
@@ -68,6 +69,11 @@ export default {
         'pause',
         'muteToggle'
     ]),
+    marqueeCheck(str, num) {
+      if(str && str.length > num) {
+        return true
+      }
+    },
     itemImg(item) {
       const url = 'https://radiomv.org/samHTMweb/'
       if (item.picture) {
@@ -168,8 +174,6 @@ export default {
 .item-meta {
   grid-area: cc;
   margin-top: 5px;
-}
-.item-meta span {
   padding-left: 6px;
 }
 .item-meta span.song-name {

@@ -46,7 +46,7 @@ export default {
 a { text-decoration: none; }
 
 #radio-player {
-    margin: 50px auto;
+  margin: 50px auto;
 }
 
 .material-icons.md-36 { font-size: 36px; }

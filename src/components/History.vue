@@ -7,7 +7,7 @@
           </div>
           <div class="history-meta marquee-container">
             <a :href="itemUrl(song)" target="_blank">
-              <span class="song-name" :class="[song.title.length >= 26 ? 'marquee' : 'normal']">{{ song.title | uppercase }}</span>
+              <span class="song-name" :class="[marqueeCheck(song.title, 26) ? 'marquee' : 'normal']">{{ song.title | capitalize }}</span>
             </a>
             <span class="artist">{{ song.artist }}</span>
             <hr>
@@ -53,6 +53,11 @@ export default {
       'playPause',
       'pause'
     ]),
+    marqueeCheck(str, num) {
+      if(str && str.length > num) {
+        return true
+      }
+    },
     itemImg(item) {
       const url = 'https://radiomv.org/samHTMweb/'
       if (item.picture) {
@@ -80,13 +85,6 @@ export default {
 </script>
 
 <style scoped>
-/* #history-volume-slider {
-  -webkit-appearance: slider-vertical;
-  writing-mode: bt-lr;
-  height: 40px;
-  margin-top: 1px;
-  width: 10px;
-} */
 .item-history {
   display: flex;
   flex-direction: column;
@@ -131,6 +129,7 @@ export default {
 }
 .history-img {
   max-height: 42px;
+  max-width: 42px;
   border: 1px solid white;
   border-radius: 10px;
 }
