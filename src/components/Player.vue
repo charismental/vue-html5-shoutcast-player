@@ -17,8 +17,7 @@
         <a :href="itemUrl(songInfo)" target="_blank">
           <div class="marquee-container"><span class="song-name" :class="[marqueeCheck(songInfo.title, 20) ? 'marquee' : 'normal']">{{ songInfo.title | capitalize }}</span></div>
         </a>
-        <span class="artist">{{ songInfo.artist }}</span>
-        <!-- :class="[songInfo.album.length >= 36 ? 'marquee' : 'normal']" -->
+        <div class="marquee-container"><span class="artist" :class="[marqueeCheck(songInfo.artist, 24) ? 'marquee' : 'normal']"> {{ songInfo.artist }}</span></div>
         <div class="marquee-container"><span class="album-name" :class="[marqueeCheck(songInfo.album, 36) ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
         <br>
         <hr>
@@ -61,13 +60,11 @@ export default {
   },
   methods: {
     ...mapMutations([
-        'historyToggle',
-        'volumeAdjustToggle'
+        'historyToggle'
     ]),
     ...mapActions([
         'playPause',
-        'pause',
-        'muteToggle'
+        'pause'
     ]),
     marqueeCheck(str, num) {
       if(str && str.length > num) {
@@ -90,26 +87,11 @@ export default {
       }
     }
   },
-  watch: {
-    volume() {
-      // eslint-disable-next-line
-      audio.volume = this.volume / 100
-    }
-  },
   computed: {
     ...mapState([
       'songInfo',
-      'isPlaying',
-      'volumeAdjust'
-    ]),
-    volume: {
-      get () {
-        return this.$store.state.volume
-      },
-      set (val) {
-        this.$store.commit('updateVolume', val)
-      }
-    }
+      'isPlaying'
+    ])
   },
   created() {
     window.addEventListener('keydown', (e) => {
