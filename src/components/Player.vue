@@ -17,7 +17,7 @@
         <a :href="itemUrl(songInfo)" target="_blank">
           <div class="marquee-container"><span class="song-name" :class="[marqueeCheck(songInfo.title, 20) ? 'marquee' : 'normal']">{{ songInfo.title | capitalize }}</span></div>
         </a>
-        <div class="marquee-container"><span class="artist" :class="[marqueeCheck(songInfo.artist, 24) ? 'marquee' : 'normal']"> {{ songInfo.artist }}</span></div>
+        <div class="marquee-container"><span class="artist" :class="[marqueeCheck(songInfo.artist, 36) ? 'marquee' : 'normal']"> {{ songInfo.artist }}</span></div>
         <div class="marquee-container"><span class="album-name" :class="[marqueeCheck(songInfo.album, 36) ? 'marquee' : 'normal']">{{ songInfo.album }}</span></div>
         <br>
         <hr>
