@@ -75,6 +75,8 @@ export default {
       const url = 'https://radiomv.org/samHTMweb/'
       if (item.picture) {
         return url + item.picture
+      } else if (this.loading) {
+        return url + 'loading.gif'
       } else {
         return url + 'customMissing.jpg'
       }
@@ -90,7 +92,8 @@ export default {
   computed: {
     ...mapState([
       'songInfo',
-      'isPlaying'
+      'isPlaying',
+      'loading'
     ])
   },
   created() {

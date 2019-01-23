@@ -22,7 +22,8 @@ export const store = new Vuex.Store({
         songHistory: '',
         // toggles
         history: false,
-        isPlaying: false
+        isPlaying: false,
+        loading: true
     },
     mutations: {
         volumeAdjustToggle(state) {
@@ -57,15 +58,21 @@ export const store = new Vuex.Store({
         },
         newInterval(state, payload) {
             state.interval = payload
+        },
+        setLoading(state, payload) {
+            state.loading = payload
         }
     },
     actions: {
-        getSongInfo({ commit }) {
+        getSongInfo({ state, commit }) {
             axios
               .get('https://radiomv.org/samHTMweb/info.json')
               .then(res => res.data)
               .then(payload => {
                   commit('setSongInfo', payload)
+                  if(state.loading == true) {
+                      commit('setLoading', false)
+                  }
               })
         },
         playPause({ commit, dispatch }) {

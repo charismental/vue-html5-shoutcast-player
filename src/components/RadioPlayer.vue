@@ -11,7 +11,6 @@ import { mapMutations } from 'vuex'
 import { mapState } from 'vuex'
 import History from './History.vue'
 import Player from './Player.vue'
-// import axios from 'axios'
 
 export default {
   name: 'RadioPlayer',
