@@ -2,7 +2,7 @@
     <div id="player">
       <div class="item-pic">
         <div class="album">
-            <a :href="itemUrl(songInfo)" target="_blank"><img :src="itemImg(songInfo)" onerror="this.src='https://radiomv.org/samHTMweb/customMissing.jpg'" :alt="songInfo.title" /></a>
+            <a :href="itemUrl(songInfo)" target="_blank"><img :src="itemImg(songInfo)" onerror="this.src='https://cascadechapel.com/samHTMweb/customMissing.jpg'" :alt="songInfo.title" /></a>
         </div>
       </div>
       <div class="item-play">
@@ -72,7 +72,7 @@ export default {
       }
     },
     itemImg(item) {
-      const url = 'https://radiomv.org/samHTMweb/'
+      const url = 'https://cascadechapel.com/samHTMweb/'
       if (item.picture) {
         return url + item.picture
       } else if (this.loading) {
@@ -85,7 +85,7 @@ export default {
       if (item.buycd) {
         return item.buycd
       } else {
-        return 'https://www.radiomv.org'
+        return 'https://www.gracewayradio.com'
       }
     }
   },
